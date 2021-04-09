@@ -1,0 +1,174 @@
+*|
+BS0 7.6 Minutes
+
+Every formally constituted meeting of a BSI committee is minuted to record the following details:
+a) the time, date and place of the meeting;
+b) the organizations represented at the meeting;
+c) the organizations registered as members but not represented at the meeting;
+d) any changes to the constitution of the committee since the last meeting;
+e) any declared conflicts of interest;
+f) any declarations of Intellectual Property Rights (IPR) for published standards and work in progress;
+g) decisions, outcomes and actions agreed at the meeting; and
+h) any specific statement or standpoint requested to be recorded by an individual member.
+*|
+
+
+class MeetingMinutes {
+  definition {
+    An instance of a meeting.
+  }
+
+  +scheduledDateTime: DateTimeRange {
+    definition {
+      Scheduled beginning and ending date time of the meeting.
+    }
+  }
+  +occurredDateTime: DateTimeRange {
+    definition {
+      Actual beginning and ending date time of the meeting.
+    }
+  }
+
+  +place: String {
+    definition {
+      Location of the meeting.
+    }
+  }
+
+  +represented: MeetingMember[0..*] {
+    definition {
+      The organizations represented at the meeting.
+    }
+  }
+
+  +registeredNotPresent: MeetingMember[0..*] {
+    definition {
+      The organizations registered as members but not represented at
+      the meeting.
+    }
+  }
+
+  +declarations: IprDeclaration[0..*] {
+    definition {
+      Any declarations against published standards and
+      work in progress, including:
+
+      * conflicts of interest;
+      * Intellectual Property Rights (IPR).
+    }
+  }
+
+  +topicsMinutes: MeetingTopicMinutes[0..*] {
+    definition {
+      Meeting topics discussed at the meeting and their
+      outcomes.
+    }
+  }
+
+}
+
+class MeetingTopicMinutes {
+  definition {
+    A meeting topic to discuss.
+  }
+
+  +title: String[0..1] {
+    A summary of the topic to discuss.
+  }
+
+  +description: String {
+    Details of the topic to discuss. This may be rich-text.
+  }
+
+  +statements: Statement[0..*] {
+    Statements or standpoints made by commenters on the topic.
+  }
+}
+
+class MeetingMember {
+  definition {
+    An organization or an individual who attended the meeting.
+  }
+}
+
+class Declaration {
+  definition {
+    A declaration statement made by one or more meeting members.
+  }
+  +party: MeetingMember[0..*]
+}
+
+class ConflictDeclaration > Declaration {
+  definition {
+    Declaration of a conflict of interest on a target.
+  }
+  +description: String {
+    definition {
+      Description of the conflict of interest.
+    }
+  }
+}
+
+class IprDeclaration > Declaration {
+  definition {
+    IPR declaration on a target.
+  }
+
+  +description: String {
+    definition {
+      Description on how the IPR subject applies to the target.
+    }
+  }
+  +iprSubject: String {
+    definition {
+      Reference to the IPR item that applies to the target.
+    }
+  }
+  +iprTarget: String {
+    definition {
+      Reference to the published standard or work in progress
+      that the IPR declaration applies to.
+    }
+  }
+}
+
+class Decision {
+  definition {
+    A decision made in the meeting.
+  }
+  +description: String
+}
+
+class Outcome {
+  definition {
+    An outcome of the meeting.
+  }
+  +description: String
+}
+
+class Action {
+  definition {
+    An action agreed upon in the meeting.
+  }
+  +description: String
+}
+
+class Statement {
+  definition {
+    A statement made in a meeting by one or more members.
+  }
+  +description: String
+  +party: MeetingMember[0..*]
+}
+
+class Comment > Statement {
+  definition {
+    A comment made in a meeting by one or more members.
+  }
+}
+
+class Standpoint > Statement {
+  definition {
+    A standpoint made in a meeting by one or more members.
+  }
+}

@@ -1,0 +1,7 @@
+== Meeting minutes model
+
+This repository provides a data model for meeting minutes
+based on BS 0:2006, 7.6.
+
+We probably want to integrate this model with the Resolution model
+in metanorma/resolution-model.
